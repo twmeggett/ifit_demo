@@ -1,12 +1,18 @@
 <template>
   <div id="app">
+    <AppNav/>
     <router-view/>
   </div>
 </template>
 
 <script>
+import AppNav from '@/components/AppNav'
+
 export default {
-  name: 'app'
+  name: 'app',
+  components: {
+    AppNav
+  }
 }
 </script>
 
@@ -17,6 +23,5 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  margin-top: 60px;
 }
 </style>
