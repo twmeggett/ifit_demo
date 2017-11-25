@@ -40,5 +40,12 @@ export default {
   font-size: 5rem;
   background-color: #f0f0f0;
   user-select: none;
+  margin-top: 20px;
+}
+.hello {
+  margin-top: 60px;
+}
+h1, h2 {
+  font-weight: normal;
 }
 </style>
