@@ -2,19 +2,20 @@
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 import Vue from 'vue'
 import BootstrapVue from 'bootstrap-vue'
-import 'firebase'
-import 'firebaseui'
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
 import App from './App'
 import router from './router'
 import store from './store'
+import { FirebaseApp, FirebaseUIApp } from './firebaseConfig'
 
 Vue.config.productionTip = false
 
 Vue.use(BootstrapVue)
 
-/* eslint-disable no-new */
+store.commit('set_firebase_app', FirebaseApp)
+store.commit('set_firebase_ui_app', FirebaseUIApp)
+
 window.$vm = new Vue({
   el: '#app',
   router,
