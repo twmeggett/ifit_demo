@@ -8,18 +8,44 @@
           <b-nav-item :to="{name: 'HelloWorld'}" exact>Hello</b-nav-item>
           <b-nav-item :to="{name: 'Counter'}">Counter</b-nav-item>
         </b-navbar-nav>
+        <!-- Right aligned nav items -->
+        <b-navbar-nav class="ml-auto">
+          <b-nav-item-dropdown v-if="user" right>
+            <!-- Using button-content slot -->
+            <template slot="button-content">
+              <img :src="user.photoURL" class="profile-image" />
+            </template>
+            <template v-if="user">
+              <b-dropdown-item class="disabled">{{ user.displayName }}</b-dropdown-item>
+              <b-dropdown-item @click="signOut">Signout</b-dropdown-item>
+            </template>
+          </b-nav-item-dropdown>
+          <b-nav-item v-else href="#">Login</b-nav-item>
+        </b-navbar-nav>
       </b-collapse>
     </b-navbar>
   </div>
 </template>
 
 <script>
+import Vuex from 'vuex'
+import Firebase from 'firebase'
+
 export default {
   name: 'AppNav',
-  computed: {
-    username () {
-      return 'Foo'
+  computed: Vuex.mapState(['user']),
+  methods: {
+    signOut () {
+      Firebase.auth().signOut()
     }
   }
 }
 </script>
+
+<style scoped>
+.profile-image {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+}
+</style>
