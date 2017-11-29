@@ -20,7 +20,7 @@
               <b-dropdown-item @click="signOut">Signout</b-dropdown-item>
             </template>
           </b-nav-item-dropdown>
-          <b-nav-item v-else href="#">Login</b-nav-item>
+          <b-button v-else :to="{name: 'Login'}" variant="secondary">Login</b-button>
         </b-navbar-nav>
       </b-collapse>
     </b-navbar>
@@ -44,8 +44,8 @@ export default {
 
 <style scoped>
 .profile-image {
-  width: 50px;
-  height: 50px;
+  width: 40px;
+  height: 40px;
   border-radius: 50%;
 }
 </style>
