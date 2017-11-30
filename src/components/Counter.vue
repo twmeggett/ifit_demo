@@ -20,7 +20,7 @@ import Vuex from 'vuex'
 
 export default {
   name: 'Counter',
-  computed: Vuex.mapState(['count']),
+  computed: Vuex.mapState(['count', 'user']),
   methods: {
     increment () {
       this.$store.dispatch('incrementAsync')
@@ -30,7 +30,14 @@ export default {
     }
   },
   created () {
-    let countRef = this.$store.state.firebaseApp.database().ref('count')
+    let countRef = this.$store.state.firebaseApp.database().ref(
+        (this.user ? `${this.user.uid}/count` : 'public/count'))
+    // create the counter if it doesn't exist
+    countRef.once('value', function (snapshot) {
+      if (!snapshot.exists()) {
+        countRef.child('value').set(0)
+      }
+    })
     this.$store.dispatch('setCountRef', countRef)
   }
 }
