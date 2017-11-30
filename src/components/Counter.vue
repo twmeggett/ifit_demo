@@ -7,7 +7,7 @@
           style="max-width: 20rem;"
           class="mb-2">
       <p class="card-text">
-        <div class="counter">{{ count }}</div>
+        <div class="counter">{{ count.value }}</div>
       </p>
       <b-button @click="increment" variant="primary">+</b-button>
       <b-button @click="decrement" variant="primary">-</b-button>
@@ -16,13 +16,11 @@
 </template>
 
 <script>
+import Vuex from 'vuex'
+
 export default {
   name: 'Counter',
-  computed: {
-    count () {
-      return this.$store.state.count
-    }
-  },
+  computed: Vuex.mapState(['count']),
   methods: {
     increment () {
       this.$store.dispatch('incrementAsync')
@@ -30,6 +28,10 @@ export default {
     decrement () {
       this.$store.commit('decrement')
     }
+  },
+  created () {
+    let countRef = this.$store.state.firebaseApp.database().ref('count')
+    this.$store.dispatch('setCountRef', countRef)
   }
 }
 </script>
