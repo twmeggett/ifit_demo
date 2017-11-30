@@ -1,6 +1,6 @@
 # itamaro-vue2-boiletplate
 
-> A Vue 2 Webpack Boilerplate
+> A Vue 2 Webpack Boilerplate with Firebase integration, using Vuex & VuexFire to sync state, and FirebaseUI for authentication
 
 ## Build Setup
 
