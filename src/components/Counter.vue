@@ -1,11 +1,17 @@
 <template>
-  <div class="hello">
-    <h1>Counter From Vuex</h1>
-    <div class="counter">{{ count }}</div>
-    <p>
-      <button @click="increment">+</button>
-      <button @click="decrement">-</button>
-    </p>
+  <div class="hello" align="center">
+    <b-card title="Counter From Vuex"
+          img-src="/static/counter.jpg"
+          img-alt="Counter Image"
+          img-top
+          style="max-width: 20rem;"
+          class="mb-2">
+      <p class="card-text">
+        <div class="counter">{{ count }}</div>
+      </p>
+      <b-button @click="increment" variant="primary">+</b-button>
+      <b-button @click="decrement" variant="primary">-</b-button>
+    </b-card>
   </div>
 </template>
 
@@ -41,9 +47,6 @@ export default {
   background-color: #f0f0f0;
   user-select: none;
   margin-top: 20px;
-}
-.hello {
-  margin-top: 60px;
 }
 h1, h2 {
   font-weight: normal;
