@@ -7,7 +7,7 @@ import 'bootstrap-vue/dist/bootstrap-vue.css'
 import App from './App'
 import router from './router'
 import store from './store'
-import { FirebaseApp, FirebaseUIApp } from './firebaseConfig'
+import { FirebaseApp, FirebaseUIApp } from './helpers/firebaseConfig'
 
 Vue.config.productionTip = false
 

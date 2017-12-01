@@ -31,7 +31,7 @@ export default {
   },
   created () {
     let countRef = this.$store.state.firebaseApp.database().ref(
-        (this.user ? `${this.user.uid}/count` : 'public/count'))
+        (this.user ? `user/${this.user.uid}/count` : 'public/count'))
     // create the counter if it doesn't exist
     countRef.once('value', function (snapshot) {
       if (!snapshot.exists()) {
