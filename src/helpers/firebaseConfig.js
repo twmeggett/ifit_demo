@@ -7,7 +7,7 @@ const config = {
   authDomain: 'counter-demo-w00t.firebaseapp.com',
   databaseURL: 'https://counter-demo-w00t.firebaseio.com',
   projectId: 'counter-demo-w00t',
-  storageBucket: '',
+  storageBucket: 'counter-demo-w00t.appspot.com',
   messagingSenderId: '92757085039'
 }
 

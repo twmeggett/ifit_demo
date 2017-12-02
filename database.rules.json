@@ -1,0 +1,22 @@
+{
+  "rules": {
+    "public": {
+      "count": {
+        "value": {
+          ".write": true
+        }
+      }
+    },
+    "user": {
+      "$uid": {
+        "count": {
+          "value": {
+            ".write": "auth != null && $uid === auth.uid"
+          }
+        }
+      }
+    },
+    ".read": true,
+    ".write": false
+  }
+}
