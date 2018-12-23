@@ -1,6 +1,6 @@
-# itamaro-vue2-boiletplate
+# Vue-Data-Grid
 
-> A Vue 2 Vuex Data Grid Demo
+> A Vue 2 Vuex Firebase Data Grid Demo
 
 ## Build & Dev Setup
 
