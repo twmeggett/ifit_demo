@@ -119,4 +119,3 @@ columns: [
 
 rows // from Vuex store connected to Firebase
 ```
-# data-grid
