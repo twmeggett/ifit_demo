@@ -78,16 +78,12 @@
       return { ...row, id }
     })
   }
-  const defaultSort = (a, b) => {
-    return a.id > b.id ? 1 : -1
-    return a.id < b.id ? -1 : 1
-    return 0
-  }
+  const defaultSort = (a, b) => a.id > b.id ? 1 : -1
   const defaultSelectedEditCell = {
     id: null,
     accessor: '',
     onChange: null,
-    originalValue: null,
+    originalValue: null
   }
 
   export default Vue.component('VueTable', {
@@ -99,9 +95,9 @@
         selectedEditCell: defaultSelectedEditCell,
         sortedCol: {
           direction: '',
-          accessor: '',
+          accessor: ''
         },
-        tableWidth: 0,
+        tableWidth: 0
       }
     },
     computed: {
@@ -123,7 +119,7 @@
           id,
           accessor: column.accessor,
           onChange: column.onChange,
-          originalValue: originalValue,
+          originalValue: originalValue
         }
       },
       focusOut: function (row) {
@@ -170,7 +166,7 @@
         this.vtRows = this.sortRows(this.vtRows)
       },
       changeFilterValue: function () {
-        let newRows = [ ...addIds(this.rows) ];
+        let newRows = [ ...addIds(this.rows) ]
 
         if (this.searchValue) {
           newRows = newRows.filter(row => {
@@ -196,7 +192,7 @@
           if (selectedFilterCol.filterMethod) {
             newRows = newRows.filter(row => selectedFilterCol.filterMethod(row[accessor], selectedFilterCol.value))
           } else {
-            const re = new RegExp(String(selectedFilterCol.value), 'i');
+            const re = new RegExp(String(selectedFilterCol.value), 'i')
             newRows = newRows.filter(row => String(row[accessor]).search(re) >= 0)
           }
         })
@@ -212,39 +208,39 @@
       sortRows: function (newRows) {
         if (this.sortedCol.accessor) {
           const selectedCol = this.columns.find(col => col.accessor === this.sortedCol.accessor)
-          
+
           if (selectedCol.sortMethod) {
             if (this.sortedCol.direction === 'descending') {
               return newRows.sort(selectedCol.sortMethod).reverse()
             }
 
             return newRows.sort(selectedCol.sortMethod)
-          } 
+          }
           return newRows.sort((a, b) => {
             if (typeof this.rows[0][this.sortedCol.accessor] === 'string') {
-              if(a[this.sortedCol.accessor].toLowerCase() < b[this.sortedCol.accessor].toLowerCase()) { 
-                return this.sortedCol.direction === 'ascending' ? -1 : 1;
+              if (a[this.sortedCol.accessor].toLowerCase() < b[this.sortedCol.accessor].toLowerCase()) {
+                return this.sortedCol.direction === 'ascending' ? -1 : 1
               }
-              if(a[this.sortedCol.accessor].toLowerCase() > b[this.sortedCol.accessor].toLowerCase()) {
-                return this.sortedCol.direction === 'ascending' ? 1 : -1;
+              if (a[this.sortedCol.accessor].toLowerCase() > b[this.sortedCol.accessor].toLowerCase()) {
+                return this.sortedCol.direction === 'ascending' ? 1 : -1
               }
-              return 0;
+              return 0
             } else if (typeof this.rows[0][this.sortedCol.accessor] === 'number') {
-              if(a[this.sortedCol.accessor] < b[this.sortedCol.accessor]) {
-                return this.sortedCol.direction === 'ascending' ? -1 : 1;
+              if (a[this.sortedCol.accessor] < b[this.sortedCol.accessor]) {
+                return this.sortedCol.direction === 'ascending' ? -1 : 1
               }
-              if(a[this.sortedCol.accessor] > b[this.sortedCol.accessor]) {
-                return this.sortedCol.direction === 'ascending' ? 1 : -1;;
+              if (a[this.sortedCol.accessor] > b[this.sortedCol.accessor]) {
+                return this.sortedCol.direction === 'ascending' ? 1 : -1
               }
-              return 0;
+              return 0
             } else if (typeof this.rows[0][this.sortedCol.accessor] === 'boolean') {
-              if(a[this.sortedCol.accessor] && !b[this.sortedCol.accessor]) {
-                return this.sortedCol.direction === 'ascending' ? -1 : 1;
+              if (a[this.sortedCol.accessor] && !b[this.sortedCol.accessor]) {
+                return this.sortedCol.direction === 'ascending' ? -1 : 1
               }
-              if(!a[this.sortedCol.accessor] && b[this.sortedCol.accessor]) {
-                return this.sortedCol.direction === 'ascending' ? 1 : -1;;
+              if (!a[this.sortedCol.accessor] && b[this.sortedCol.accessor]) {
+                return this.sortedCol.direction === 'ascending' ? 1 : -1
               }
-              return 0;
+              return 0
             }
           })
         }
@@ -258,7 +254,7 @@
           if (val.id) {
             this.$refs[`vt-edit-input-${val.id}-${val.accessor}`][0].focus()
           }
-        }, 1);
+        }, 1)
       },
       rows: function (val) {
         this.vtRows = addIds(this.rows).sort(defaultSort)
@@ -266,7 +262,7 @@
     },
     created () {
       this.tableWidth = this.columns.map(column => column.minWidth || 100).reduce((total, num) => total + num)
-    },
+    }
   })
 </script>
 
@@ -280,6 +276,9 @@ table {
 }
 th {
   cursor: pointer;
+}
+th:focus {
+  outline: none;
 }
 td {
   padding: 10px 1px;

@@ -1,3 +1,4 @@
+/* eslint-disable */
 function formatMoney (sign, num, c, d, t) {
   var n = num,
       c = isNaN(c = Math.abs(c)) ? 2 : c,

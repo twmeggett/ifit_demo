@@ -11,7 +11,6 @@
 <script>
 import Vuex from 'vuex'
 import moment from 'moment'
-import db from '../helpers/firebaseConfig'
 import VueTable from './VueTable.vue'
 import Payments from '../../static/payments-data.csv'
 import { usDollarFormatter } from '../util/formatMoney'
@@ -25,9 +24,9 @@ export default {
           header: 'Name',
           accessor: 'Name',
           minWidth: 120,
-          sortMethod: function (a, b) { // custom sort by last name 
-            if(a['Name'].split(' ')[1] > b['Name'].split(' ')[1]) { return 1 }
-            if(a['Name'].split(' ')[1] < b['Name'].split(' ')[1]) { return -1 }
+          sortMethod: function (a, b) { // custom sort by last name
+            if (a['Name'].split(' ')[1] > b['Name'].split(' ')[1]) { return 1 }
+            if (a['Name'].split(' ')[1] < b['Name'].split(' ')[1]) { return -1 }
             return 0
           }
         },
@@ -44,18 +43,18 @@ export default {
           editable: true,
           onChange: (payment) => {
             this.updatePaymentDesc(payment)
-          },
+          }
         },
         {
           header: 'Date',
           accessor: 'Date',
           minWidth: 120,
           customCell: true,
-          filterMethod: function(rowValue, filterValue) { //custom filter on what the display date looks like MM/DD/YYYY
+          filterMethod: function (rowValue, filterValue) { // custom filter on what the display date looks like MM/DD/YYYY
             const re = new RegExp(String(filterValue), 'i')
             const dateFormatted = moment(rowValue).format('MM/DD/YYYY')
             return String(dateFormatted).search(re) >= 0
-          },
+          }
         }
       ]
     }

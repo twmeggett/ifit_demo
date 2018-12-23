@@ -30,9 +30,9 @@ columns: [
       header: 'Name',
       accessor: 'Name',
       minWidth: 120,
-      sortMethod: function (a, b) { // custom sort by last name 
-        if(a['Name'].split(' ')[1] > b['Name'].split(' ')[1]) { return 1 }
-        if(a['Name'].split(' ')[1] < b['Name'].split(' ')[1]) { return -1 }
+      sortMethod: function (a, b) { // custom sort by last name
+        if (a['Name'].split(' ')[1] > b['Name'].split(' ')[1]) { return 1 }
+        if (a['Name'].split(' ')[1] < b['Name'].split(' ')[1]) { return -1 }
         return 0
       }
     },
@@ -40,7 +40,7 @@ columns: [
       header: 'Amount',
       accessor: 'Amount',
       minWidth: 150,
-      customCell: true // Custom template nested in the component and given a slot name - name should be the same as it's accessor
+      customCell: true
     },
     {
       header: 'Description',
@@ -48,19 +48,19 @@ columns: [
       minWidth: 400,
       editable: true,
       onChange: (payment) => {
-        this.updatePaymentDesc(payment) //handles firebase update
-      },
+        this.updatePaymentDesc(payment)
+      }
     },
     {
       header: 'Date',
       accessor: 'Date',
       minWidth: 120,
       customCell: true,
-      filterMethod: function(rowValue, filterValue) { //custom filter on what the display date looks like MM/DD/YYYY
+      filterMethod: function (rowValue, filterValue) { // custom filter on what the display date looks like MM/DD/YYYY
         const re = new RegExp(String(filterValue), 'i')
         const dateFormatted = moment(rowValue).format('MM/DD/YYYY')
         return String(dateFormatted).search(re) >= 0
-      },
+      }
     }
   ]
 

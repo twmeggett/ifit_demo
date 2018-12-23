@@ -8,11 +8,9 @@
 </template>
 
 <script>
-import Vuex from 'vuex'
-import Firebase from 'firebase'
 
 export default {
-  name: 'AppNav',
+  name: 'AppNav'
 }
 </script>
 
