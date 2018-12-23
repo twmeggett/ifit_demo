@@ -68,7 +68,7 @@ The demo page is hooked up to a Firebase database, managing the data passed into
 -Both Date and Amount columns have custom templates passed in to properly format the data  
 
 
-#Vue Component
+#Vue Component Example
 ```
 <vue-table :columns="columns" :rows="payments">
   <template slot="Date" slot-scope="slotProps"><span>{{displayDate(slotProps.colData)}}</span></template>
