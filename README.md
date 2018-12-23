@@ -52,3 +52,4 @@ Deploy only database rules (described in `database.rules.json`):
 ```
 firebase deploy --only database
 ```
+# data-grid
