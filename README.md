@@ -69,14 +69,15 @@ The demo page is hooked up to a Firebase database, managing the data passed into
 
 
 #Vue Component
-
+```
 <vue-table :columns="columns" :rows="payments">
   <template slot="Date" slot-scope="slotProps"><span>{{displayDate(slotProps.colData)}}</span></template>
   <template slot="Amount" slot-scope="slotProps"><span>{{usDollarFormatter(slotProps.colData)}}</span></template>
 </vue-table>
+```
 
 #Props Passed to Component
-
+```
 columns: [
     {
       header: 'Name',
@@ -117,5 +118,5 @@ columns: [
   ]
 
 rows // from Vuex store connected to Firebase
- 
+```
 # data-grid
