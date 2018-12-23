@@ -28,7 +28,7 @@
           <td
             v-for="column in columns"
             v-on:click="() => {if(column.editable){changeEditCol(row.id, column, row[column.accessor])}}"
-            :min-width="column.minWidth || 100">
+            :style="{width: column.minWidth || 100}">
             <span
               v-if="!column.editable || selectedEditCell.id !== row.id || selectedEditCell.accessor !== column.accessor"
               name="vt-edit-input">

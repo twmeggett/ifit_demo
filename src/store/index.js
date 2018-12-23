@@ -12,7 +12,6 @@ const state = {
 }
 
 const getters = {
-  user: state => state.user,
   firebaseApp: state => state.firebaseApp
 }
 

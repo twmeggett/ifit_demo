@@ -1,7 +1,7 @@
 <template>
   <div class="hello" align="center">
     <h1>Payments Page</h1>
-    <vue-table :columns="columns" :rows="payments" onChangeMe filterable>
+    <vue-table :columns="columns" :rows="payments">
       <template slot="Date" slot-scope="slotProps"><span>{{displayDate(slotProps.colData)}}</span></template>
       <template slot="Amount" slot-scope="slotProps"><span>{{usDollarFormatter(slotProps.colData)}}</span></template>
     </vue-table>
@@ -84,11 +84,6 @@ export default {
       return usDollarFormatter(amount)
     }
   },
-  /*
-  created () {
-    this.$store.dispatch('setTodosRef', db.collection('todos'))
-  }
-  */
   created () {
     let paymentsRef = this.$store.state.firebaseApp.database().ref('payments')
     // create the payments if it doesn't exist

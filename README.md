@@ -1,8 +1,6 @@
 # itamaro-vue2-boiletplate
 
-> A Vue 2 Webpack Boilerplate with Firebase integration, using Vuex & VuexFire to sync state, and FirebaseUI for authentication
-
-Check out the deployed demo (Firebase Hosting): https://counter-demo-w00t.firebaseapp.com/
+> A Vue 2 Vuex Data Grid Demo
 
 ## Build & Dev Setup
 
@@ -29,27 +27,95 @@ yarn run e2e
 yarn test
 ```
 
-For a detailed explanation on how things work, check out the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
-
-
-## Firebase Setup
-
-Create a Firebase project through the [Firebase console](https://console.firebase.google.com/), and set up Google Sign-In method (https://firebase.google.com/docs/auth/).
-
-The Firebase configuration for this project was created by running `firebase init` in the project root dir, after installing the Firebase CLI (`brew install firebase-cli`).
-
-Run `firebase login` to authenticate.
-
-Deploy the entire app:
-
 ```
 yarn build
 firebase deploy
 ```
 
-Deploy only database rules (described in `database.rules.json`):
+This is an example of a portable Vue data grid component.
+The demo page is hooked up to a Firebase database, managing the data passed into the component to be displayed.
 
-```
-firebase deploy --only database
-```
+## Sorting
+
+-Columns are sortable by default by clicking on the column name in the header.
+
+-The name column sorts by last name using a custom sort function passed to the component
+
+## Filtering
+
+-Columns are filterable by entering text into the text inputs below the column name.
+
+-The Data column filters by the displayed value instead of the timestamp by using a custom filter method passed to the component
+
+## Searching
+
+-All of the data is searchable by entering text into the search bar
+
+-Data will still be sorted and filtered correctly
+
+## Editing
+
+-The Description column is an example of an editable column on click
+
+-Press enter or click away from the input after editing the description to have the passed in onChange function update the data
+
+-Press escape to reset the description to it's previous value
+
+-Changed data is saved to the firebase database
+
+## Custom Cell Template
+
+-Both Date and Amount columns have custom templates passed in to properly format the data  
+
+
+#Vue Component
+
+<vue-table :columns="columns" :rows="payments">
+  <template slot="Date" slot-scope="slotProps"><span>{{displayDate(slotProps.colData)}}</span></template>
+  <template slot="Amount" slot-scope="slotProps"><span>{{usDollarFormatter(slotProps.colData)}}</span></template>
+</vue-table>
+
+#Props Passed to Component
+
+columns: [
+    {
+      header: 'Name',
+      accessor: 'Name',
+      minWidth: 120,
+      sortMethod: function (a, b) { // custom sort by last name 
+        if(a['Name'].split(' ')[1] > b['Name'].split(' ')[1]) { return 1 }
+        if(a['Name'].split(' ')[1] < b['Name'].split(' ')[1]) { return -1 }
+        return 0
+      }
+    },
+    {
+      header: 'Amount',
+      accessor: 'Amount',
+      minWidth: 150,
+      customCell: true // Custom template nested in the component and given a slot name - name should be the same as it's accessor
+    },
+    {
+      header: 'Description',
+      accessor: 'Description',
+      minWidth: 400,
+      editable: true,
+      onChange: (payment) => {
+        this.updatePaymentDesc(payment) //handles firebase update
+      },
+    },
+    {
+      header: 'Date',
+      accessor: 'Date',
+      minWidth: 120,
+      customCell: true,
+      filterMethod: function(rowValue, filterValue) { //custom filter on what the display date looks like MM/DD/YYYY
+        const re = new RegExp(String(filterValue), 'i')
+        const dateFormatted = moment(rowValue).format('MM/DD/YYYY')
+        return String(dateFormatted).search(re) >= 0
+      },
+    }
+  ]
+
+rows // from Vuex store connected to Firebase
+ 
 # data-grid
