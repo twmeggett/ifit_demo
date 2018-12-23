@@ -12,11 +12,6 @@ yarn install
 yarn run dev
 ```
 
-```
-yarn build
-firebase deploy
-```
-
 This is an example of a portable Vue data grid component.
 The demo page is hooked up to a Firebase database, managing the data passed into the component to be displayed.
 
