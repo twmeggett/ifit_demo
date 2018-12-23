@@ -1,9 +1,9 @@
 <template>
   <div class="hello" align="center">
     <h1>Payments Page</h1>
-    <vue-table :columns="columns" :rows="payments" filterable>
-      <template slot="Date" slot-scope="slotProps"><p>{{displayDate(slotProps.colData)}}</p></template>
-      <template slot="Amount" slot-scope="slotProps"><p>{{usDollarFormatter(slotProps.colData)}}</p></template>
+    <vue-table :columns="columns" :rows="payments" onChangeMe filterable>
+      <template slot="Date" slot-scope="slotProps"><span>{{displayDate(slotProps.colData)}}</span></template>
+      <template slot="Amount" slot-scope="slotProps"><span>{{usDollarFormatter(slotProps.colData)}}</span></template>
     </vue-table>
   </div>
 </template>
@@ -41,7 +41,10 @@ export default {
           header: 'Description',
           accessor: 'Description',
           minWidth: 400,
-          editable: true
+          editable: true,
+          onChange: (payment) => {
+            this.updatePaymentDesc(payment)
+          },
         },
         {
           header: 'Date',
@@ -59,14 +62,20 @@ export default {
   },
   computed: Vuex.mapState(['payments']),
   methods: {
+    createColumns () {
+
+    },
     increment () {
       this.$store.dispatch('incrementAsync')
     },
     decrement () {
       this.$store.commit('decrement')
     },
-    updatePayment (payment) {
-      this.$store.dispatch('updatePayment', payment)
+    updatePaymentDesc (newPayment) {
+      const originalPayment = this.payments.find(payment => payment.ID === newPayment.ID)
+      if (originalPayment.Description !== newPayment.Description) {
+        this.$store.dispatch('update_payment_description', newPayment)
+      }
     },
     displayDate (date) {
       return moment(date).format('MM/DD/YYYY')
@@ -86,7 +95,11 @@ export default {
     paymentsRef.once('value', function (snapshot) {
       console.log(snapshot.val())
       if (!snapshot.exists()) {
-        paymentsRef.set(Payments)
+        let dataObject = {}
+        Payments.forEach(payment => {
+          dataObject[payment.ID] = payment
+        })
+        paymentsRef.set(dataObject)
       }
     })
     this.$store.dispatch('setPaymentsRef', paymentsRef)

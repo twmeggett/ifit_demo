@@ -3,6 +3,12 @@
     <table :width="tableWidth">
       <thead>
         <tr>
+          <th style="padding-bottom: 20px" :colspan="this.columns.length">
+            <b>Search</b>
+            <input v-model="searchValue" v-on:input="changeFilterValue" />
+          </th>
+        </tr>
+        <tr>
           <th
             v-for="column in columns"
             v-on:click="changeSortedCol(column.accessor)"
@@ -10,21 +16,21 @@
               {{ column.header }}
           </th>
         </tr>
-      </thead>
-      <tbody>
         <tr>
           <td
             v-for="filteredCol in filteredCols">
             <input v-model="filteredCol.value" v-on:input="changeFilterValue" />
           </td>
         </tr>
+      </thead>
+      <tbody>
         <tr v-for="(row, index) in vtRows">
           <td
             v-for="column in columns"
-            v-on:click="changeEditCol(row.id, column.accessor)"
+            v-on:click="() => {if(column.editable){changeEditCol(row.id, column, row[column.accessor])}}"
             :min-width="column.minWidth || 100">
             <span
-              v-if="!column.editable || selectedEditCol.id !== row.id || selectedEditCol.accessor !== column.accessor"
+              v-if="!column.editable || selectedEditCell.id !== row.id || selectedEditCell.accessor !== column.accessor"
               name="vt-edit-input">
               <span v-if="!column.customCell" style="text-overflow: ellipsis;">{{ row[column.accessor] }}</span>
               <span>
@@ -37,12 +43,12 @@
             </span>
             <span
               v-if="column.editable"
-              v-show="column.editable && selectedEditCol.id === row.id && selectedEditCol.accessor === column.accessor">
+              v-show="column.editable && selectedEditCell.id === row.id && selectedEditCell.accessor === column.accessor">
               <input
                 v-model="row[column.accessor]"
-                v-on:keyup.enter="resetEditCol()"
-                v-on:keyup.27="resetEditCol()"
-                v-on:focusout="resetEditCol()"
+                v-on:keyup.enter="resetEditCol(row)"
+                v-on:keyup.27="resetEditCol(row, true)"
+                v-on:focusout="focusOut(row)"
                 :ref="`vt-edit-input-${row.id}-${column.accessor}`"
                 :maxlength="column.maxLength">
             </span>
@@ -77,16 +83,20 @@
     return a.id < b.id ? -1 : 1
     return 0
   }
+  const defaultSelectedEditCell = {
+    id: null,
+    accessor: '',
+    onChange: null,
+    originalValue: null,
+  }
 
   export default Vue.component('VueTable', {
     props: ['columns', 'rows'],
     data () {
       return {
         vtRows: [],
-        selectedEditCol: {
-          id: null,
-          accessor: ''
-        },
+        searchValue: '',
+        selectedEditCell: defaultSelectedEditCell,
         sortedCol: {
           direction: '',
           accessor: '',
@@ -108,17 +118,30 @@
       }
     },
     methods: {
-      changeEditCol: function (id, accessor) {
-        this.selectedEditCol = {
+      changeEditCol: function (id, column, originalValue) {
+        this.selectedEditCell = {
           id,
-          accessor
+          accessor: column.accessor,
+          onChange: column.onChange,
+          originalValue: originalValue,
         }
       },
-      resetEditCol: function () {
-        this.selectedEditCol = {
-          id: null,
-          accessor: ''
+      focusOut: function (row) {
+        if (this.selectedEditCell.onChange) {
+          let newRow = {}
+          const originalRowKeys = Object.keys(this.rows[0])
+          originalRowKeys.forEach(key => {
+            newRow[key] = row[key]
+          })
+          this.selectedEditCell.onChange(newRow)
         }
+        this.selectedEditCell = defaultSelectedEditCell
+      },
+      resetEditCol: function (row, esc) {
+        if (esc) {
+          row[this.selectedEditCell.accessor] = this.selectedEditCell.originalValue
+        }
+        this.focusOut(row)
       },
       changeSortedCol: function (accessor) {
         if (this.sortedCol.accessor === accessor) {
@@ -147,12 +170,29 @@
         this.vtRows = this.sortRows(this.vtRows)
       },
       changeFilterValue: function () {
-        let filterValsExist = false;
         let newRows = [ ...addIds(this.rows) ];
+
+        if (this.searchValue) {
+          newRows = newRows.filter(row => {
+            let pass = false
+            this.columns.some(col => {
+              if (col.filterMethod) {
+                const match = col.filterMethod(row[col.accessor], this.searchValue)
+                if (match) { pass = true }
+                return match
+              }
+
+              const re = new RegExp(String(this.searchValue), 'i')
+              const match = String(row[col.accessor]).search(re) >= 0
+              if (match) { pass = true }
+              return match
+            })
+            return pass
+          })
+        }
 
         Object.keys(this.filteredCols).forEach(accessor => {
           const selectedFilterCol = this.filteredCols[accessor]
-          if (selectedFilterCol.value) { filterValsExist = true }
           if (selectedFilterCol.filterMethod) {
             newRows = newRows.filter(row => selectedFilterCol.filterMethod(row[accessor], selectedFilterCol.value))
           } else {
@@ -213,9 +253,11 @@
       }
     },
     watch: {
-      selectedEditCol: function (val) {
-        setTimeout(() => { 
-          this.$refs[`vt-edit-input-${val.id}-${val.accessor}`][0].focus()
+      selectedEditCell: function (val) {
+        setTimeout(() => {
+          if (val.id) {
+            this.$refs[`vt-edit-input-${val.id}-${val.accessor}`][0].focus()
+          }
         }, 1);
       },
       rows: function (val) {
@@ -235,6 +277,12 @@
 }
 table {
 
+}
+th {
+  cursor: pointer;
+}
+td {
+  padding: 10px 1px;
 }
 input {
   width: 100%;
