@@ -45,7 +45,7 @@ The demo page is hooked up to a Firebase database, managing the data passed into
 
 -Columns are filterable by entering text into the text inputs below the column name.
 
--The Data column filters by the displayed value instead of the timestamp by using a custom filter method passed to the component
+-The Data column filters by the displayed data (MM/DD/YYYY) instead of the timestamp by using a custom filter method passed to the component
 
 ## Searching
 
