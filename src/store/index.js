@@ -9,6 +9,7 @@ const strict = false
 const state = {
   count: {value: '...'},  // will be bound as an object via VuexFire
   user: null,
+  payments: [],
   firebaseApp: null,
   firebaseUIApp: null
 }
