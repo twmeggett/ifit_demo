@@ -15,39 +15,6 @@ yarn run dev
 This is an example of a portable Vue data grid component.
 The demo page is hooked up to a Firebase database, managing the data passed into the component to be displayed.
 
-## Sorting
-
--Columns are sortable by default by clicking on the column name in the header.
-
--The name column sorts by last name using a custom sort function passed to the component
-
-## Filtering
-
--Columns are filterable by entering text into the text inputs below the column name.
-
--The Data column filters by the displayed data (MM/DD/YYYY) instead of the timestamp by using a custom filter method passed to the component
-
-## Searching
-
--All of the data is searchable by entering text into the search bar
-
--Data will still be sorted and filtered correctly
-
-## Editing
-
--The Description column is an example of an editable column on click
-
--Press enter or click away from the input after editing the description to have the passed in onChange function update the data
-
--Press escape to reset the description to it's previous value
-
--Changed data is saved to the firebase database
-
-## Custom Cell Template
-
--Both Date and Amount columns have custom templates passed in to properly format the data  
-
-
 #Vue Component Example
 ```
 <vue-table :columns="columns" :rows="payments">
@@ -99,3 +66,34 @@ columns: [
 
 rows // from Vuex store connected to Firebase
 ```
+## Sorting
+
+-Columns are sortable by default by clicking on the column name in the header.
+
+-The name column sorts by last name using a custom sort function passed to the component
+
+## Filtering
+
+-Columns are filterable by entering text into the text inputs below the column name.
+
+-The Data column filters by the displayed data (MM/DD/YYYY) instead of the timestamp by using a custom filter method passed to the component
+
+## Searching
+
+-All of the data is searchable by entering text into the search bar
+
+-Data will still be sorted and filtered correctly
+
+## Editing
+
+-The Description column is an example of an editable column on click
+
+-Press enter or click away from the input after editing the description to have the passed in onChange function update the data
+
+-Press escape to reset the description to it's previous value
+
+-Changed data is saved to the firebase database
+
+## Custom Cell Template
+
+-Both Date and Amount columns have custom templates passed in to properly format the data  
