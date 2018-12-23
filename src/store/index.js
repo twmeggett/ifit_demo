@@ -10,14 +10,12 @@ const state = {
   count: {value: '...'},  // will be bound as an object via VuexFire
   user: null,
   payments: [],
-  firebaseApp: null,
-  firebaseUIApp: null
+  firebaseApp: null
 }
 
 const getters = {
   user: state => state.user,
-  firebaseApp: state => state.firebaseApp,
-  firebaseUIApp: state => state.firebaseUIApp
+  firebaseApp: state => state.firebaseApp
 }
 
 const mutations = {
@@ -29,6 +27,9 @@ const mutations = {
   },
   set_user (state, user) {
     state.user = user
+  },
+  set_payments (state, payments) {
+    state.payments = payments
   },
   set_firebase_app (state, firebaseApp) {
     state.firebaseApp = firebaseApp
@@ -48,6 +49,10 @@ const actions = {
   setCountRef: firebaseAction(({ bindFirebaseRef }, ref) => {
     store.countRef = ref
     bindFirebaseRef('count', ref, { wait: true })
+  }),
+  setPaymentsRef: firebaseAction(({ bindFirebaseRef }, ref) => {
+    store.paymentsRef = ref
+    bindFirebaseRef('payments', ref, { wait: true })
   })
 }
 

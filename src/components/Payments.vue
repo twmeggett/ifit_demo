@@ -11,6 +11,7 @@
 <script>
 import Vuex from 'vuex'
 import moment from 'moment'
+import db from '../helpers/firebaseConfig'
 import VueTable from './VueTable.vue'
 import Payments from '../../static/payments-data.csv'
 import { usDollarFormatter } from '../util/formatMoney'
@@ -47,23 +48,25 @@ export default {
           accessor: 'Date',
           minWidth: 120,
           customCell: true,
-          filterMethod: function(rowValue, filterValue) {
+          filterMethod: function(rowValue, filterValue) { //custom filter on what the display date looks like MM/DD/YYYY
             const re = new RegExp(String(filterValue), 'i')
             const dateFormatted = moment(rowValue).format('MM/DD/YYYY')
             return String(dateFormatted).search(re) >= 0
           },
         }
-      ],
-      payments: Payments
+      ]
     }
   },
-  computed: Vuex.mapState(['count', 'user']),
+  computed: Vuex.mapState(['payments']),
   methods: {
     increment () {
       this.$store.dispatch('incrementAsync')
     },
     decrement () {
       this.$store.commit('decrement')
+    },
+    updatePayment (payment) {
+      this.$store.dispatch('updatePayment', payment)
     },
     displayDate (date) {
       return moment(date).format('MM/DD/YYYY')
@@ -72,16 +75,21 @@ export default {
       return usDollarFormatter(amount)
     }
   },
+  /*
   created () {
-    let countRef = this.$store.state.firebaseApp.database().ref(
-        (this.user ? `user/${this.user.uid}/count` : 'public/count'))
-    // create the counter if it doesn't exist
-    countRef.once('value', function (snapshot) {
+    this.$store.dispatch('setTodosRef', db.collection('todos'))
+  }
+  */
+  created () {
+    let paymentsRef = this.$store.state.firebaseApp.database().ref('payments')
+    // create the payments if it doesn't exist
+    paymentsRef.once('value', function (snapshot) {
+      console.log(snapshot.val())
       if (!snapshot.exists()) {
-        countRef.child('value').set(0)
+        paymentsRef.set(Payments)
       }
     })
-    this.$store.dispatch('setCountRef', countRef)
+    this.$store.dispatch('setPaymentsRef', paymentsRef)
   },
   components: {
     VueTable: VueTable

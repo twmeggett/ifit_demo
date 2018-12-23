@@ -1,49 +1,57 @@
 <template inline-template>
   <div class="v-table-container">
     <table :width="tableWidth">
-      <tr>
-        <th
-          v-for="column in columns"
-          v-on:click="changeSortedCol(column.accessor)"
-          :class="headerLineStyle(column.accessor)">
-            {{ column.header }}
-        </th>
-      </tr>
-      <tr>
-        <td
-          v-for="filteredCol in filteredCols">
-          <input v-model="filteredCol.value" v-on:input="changeFilterValue" />
-        </td>
-      </tr>
-      <tr v-for="(row, index) in vtRows">
-        <td
-          v-for="column in columns"
-          v-on:click="changeEditCol(row.id, column.accessor)"
-          :min-width="column.minWidth || 100">
-          <span
-            v-if="!column.editable || selectedEditCol.id !== row.id || selectedEditCol.accessor !== column.accessor"
-            name="vt-edit-input">
-            <span v-if="!column.customCell" style="text-overflow: ellipsis;">{{ row[column.accessor] }}</span>
-            <span>
-              <slot
-                :name="column.accessor"
-                :colData="row[column.accessor]"
-                :rowData="row">
-              </slot>
+      <thead>
+        <tr>
+          <th
+            v-for="column in columns"
+            v-on:click="changeSortedCol(column.accessor)"
+            :class="headerLineStyle(column.accessor)">
+              {{ column.header }}
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td
+            v-for="filteredCol in filteredCols">
+            <input v-model="filteredCol.value" v-on:input="changeFilterValue" />
+          </td>
+        </tr>
+        <tr v-for="(row, index) in vtRows">
+          <td
+            v-for="column in columns"
+            v-on:click="changeEditCol(row.id, column.accessor)"
+            :min-width="column.minWidth || 100">
+            <span
+              v-if="!column.editable || selectedEditCol.id !== row.id || selectedEditCol.accessor !== column.accessor"
+              name="vt-edit-input">
+              <span v-if="!column.customCell" style="text-overflow: ellipsis;">{{ row[column.accessor] }}</span>
+              <span>
+                <slot
+                  :name="column.accessor"
+                  :colData="row[column.accessor]"
+                  :rowData="row">
+                </slot>
+              </span>
             </span>
-          </span>
-          <span
-            v-show="column.editable && selectedEditCol.id === row.id && selectedEditCol.accessor === column.accessor">
-            <input
-              v-model="row[column.accessor]"
-              v-on:keyup.enter="resetEditCol()"
-              v-on:keyup.27="resetEditCol()"
-              v-on:focusout="resetEditCol()"
-              :ref="`vt-edit-input-${row.id}-${column.accessor}`"
-              :maxlength="column.maxLength">
-          </span>
-        </td>
-      </tr>
+            <span
+              v-if="column.editable"
+              v-show="column.editable && selectedEditCol.id === row.id && selectedEditCol.accessor === column.accessor">
+              <input
+                v-model="row[column.accessor]"
+                v-on:keyup.enter="resetEditCol()"
+                v-on:keyup.27="resetEditCol()"
+                v-on:focusout="resetEditCol()"
+                :ref="`vt-edit-input-${row.id}-${column.accessor}`"
+                :maxlength="column.maxLength">
+            </span>
+          </td>
+        </tr>
+      </tbody>
+      <tfoot>
+
+      </tfoot>
     </table>
   </div>
 </template>
@@ -74,7 +82,7 @@
     props: ['columns', 'rows'],
     data () {
       return {
-        vtRows: addIds(this.rows).sort(defaultSort),
+        vtRows: [],
         selectedEditCol: {
           id: null,
           accessor: ''
@@ -209,6 +217,9 @@
         setTimeout(() => { 
           this.$refs[`vt-edit-input-${val.id}-${val.accessor}`][0].focus()
         }, 1);
+      },
+      rows: function (val) {
+        this.vtRows = addIds(this.rows).sort(defaultSort)
       }
     },
     created () {

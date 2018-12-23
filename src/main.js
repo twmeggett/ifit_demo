@@ -7,14 +7,13 @@ import 'bootstrap-vue/dist/bootstrap-vue.css'
 import App from './App'
 import router from './router'
 import store from './store'
-import { FirebaseApp, FirebaseUIApp } from './helpers/firebaseConfig'
+import { FirebaseApp } from './helpers/firebaseConfig'
 
 Vue.config.productionTip = false
 
 Vue.use(BootstrapVue)
 
 store.commit('set_firebase_app', FirebaseApp)
-store.commit('set_firebase_ui_app', FirebaseUIApp)
 
 window.$vm = new Vue({
   el: '#app',

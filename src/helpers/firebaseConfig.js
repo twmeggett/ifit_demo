@@ -1,19 +1,12 @@
 import Firebase from 'firebase'
-import FirebaseUI from 'firebaseui'
-import store from '@/store'
 
 const config = {
-  apiKey: 'AIzaSyDghyGJtYmOY93Iw4cTaM9R2ydPNX2r66U',
-  authDomain: 'counter-demo-w00t.firebaseapp.com',
-  databaseURL: 'https://counter-demo-w00t.firebaseio.com',
-  projectId: 'counter-demo-w00t',
-  storageBucket: 'counter-demo-w00t.appspot.com',
-  messagingSenderId: '92757085039'
+  apiKey: 'AIzaSyCJFaWyS4cu3ObQvb7TA67EcDoXUy1AYUE',
+  authDomain: 'vue-data-grid.firebaseapp.com',
+  databaseURL: 'https://vue-data-grid.firebaseio.com',
+  projectId: 'vue-data-grid',
+  storageBucket: 'vue-data-grid.appspot.com',
+  messagingSenderId: '56443049230'
 }
 
 export const FirebaseApp = Firebase.initializeApp(config)
-export const FirebaseUIApp = new FirebaseUI.auth.AuthUI(Firebase.auth(FirebaseApp))
-
-Firebase.auth().onAuthStateChanged(user => {
-  store.commit('set_user', user)
-})
