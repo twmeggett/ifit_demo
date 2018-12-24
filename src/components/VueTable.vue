@@ -1,17 +1,13 @@
 <template inline-template>
   <div>
-    <div :style="{width: vtContainerStyle.width}">
-      <table style="width: 100%;">
-        <tr>
-          <th style="width: 100%;">
-            <input v-model="searchValue" v-on:input="changeFilterValue" placeholder="Search" />
-          </th>
-        </tr>
-      </table>
-    </div>
     <div :style="vtContainerStyle" :ref="'vt-container'">
       <table :width="tableWidth">
         <thead>
+          <tr>
+            <th style="padding-bottom: 15px" :colspan="columns.length">
+              <input v-model="searchValue" v-on:input="changeFilterValue" placeholder="Search All" />
+            </th>
+          </tr>
           <tr>
             <th
               v-for="column in columns"
@@ -150,7 +146,7 @@
         return fitlteredObj
       },
       vtContainerStyle: function () {
-        let style = { width: '90vw', height: '425px', overflow: 'auto' }
+        let style = { height: '425px', overflow: 'auto' }
         if (this.containerStyle) {
           style = { ...style, ...this.containerStyle }
         }
@@ -335,12 +331,6 @@
 </script>
 
 <style scoped>
-th {
-  cursor: pointer;
-}
-th:focus {
-  outline: none;
-}
 td {
   padding: 10px 4px;
 }
@@ -364,5 +354,6 @@ button {
 }
 .disabled {
   color: grey;
+  cursor: none;
 }
 </style>
