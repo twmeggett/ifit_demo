@@ -15,9 +15,8 @@
           <tr>
             <th
               v-for="column in columns"
-              v-on:click="changeSortedCol(column.accessor)"
-              :class="headerLineStyle(column.accessor)">
-              <button>{{ column.header }}</button>
+              v-on:click="changeSortedCol(column.accessor)">
+              <button :class="headerLineStyle(column.accessor)">{{ column.header }}</button>
             </th>
           </tr>
           <tr v-if="showFilters">
