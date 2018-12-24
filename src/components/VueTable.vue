@@ -1,64 +1,94 @@
 <template inline-template>
-  <div class="v-table-container">
-    <table :width="tableWidth">
-      <thead>
+  <div>
+    <div :style="{width: vtContainerStyle.width}">
+      <table style="width: 100%;">
         <tr>
-          <th style="padding-bottom: 20px" :colspan="this.columns.length">
-            <b>Search</b>
-            <input v-model="searchValue" v-on:input="changeFilterValue" />
+          <th style="width: 100%;">
+            <input v-model="searchValue" v-on:input="changeFilterValue" placeholder="Search" />
           </th>
         </tr>
-        <tr>
-          <th
-            v-for="column in columns"
-            v-on:click="changeSortedCol(column.accessor)"
-            :class="headerLineStyle(column.accessor)">
-              {{ column.header }}
-          </th>
-        </tr>
-        <tr>
-          <td
-            v-for="filteredCol in filteredCols">
-            <input v-model="filteredCol.value" v-on:input="changeFilterValue" />
-          </td>
-        </tr>
-      </thead>
-      <tbody>
-        <tr v-for="(row, index) in vtRows">
-          <td
-            v-for="column in columns"
-            v-on:click="() => {if(column.editable){changeEditCol(row.id, column, row[column.accessor])}}"
-            :style="{width: column.minWidth || 100}">
-            <span
-              v-if="!column.editable || selectedEditCell.id !== row.id || selectedEditCell.accessor !== column.accessor"
-              name="vt-edit-input">
-              <span v-if="!column.customCell" style="text-overflow: ellipsis;">{{ row[column.accessor] }}</span>
-              <span>
-                <slot
-                  :name="column.accessor"
-                  :colData="row[column.accessor]"
-                  :rowData="row">
-                </slot>
+      </table>
+    </div>
+    <div :style="vtContainerStyle" :ref="'vt-container'">
+      <table :width="tableWidth">
+        <thead>
+          <tr>
+            <th
+              v-for="column in columns"
+              v-on:click="changeSortedCol(column.accessor)"
+              :class="headerLineStyle(column.accessor)">
+              <button>{{ column.header }}</button>
+            </th>
+          </tr>
+          <tr v-if="showFilters">
+            <td
+              v-for="filteredCol in filteredCols">
+              <input v-model="filteredCol.value" v-on:input="changeFilterValue" />
+            </td>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="(row, index) in vtRows" v-if="showPagination ? index >= startIndex && index <= endIndex : true">
+            <td
+              v-for="column in columns"
+              v-on:click="() => {if(column.editable){changeEditCol(row.id, column, row[column.accessor])}}"
+              :style="{width: column.minWidth || 100}">
+              <span
+                v-if="!column.editable || selectedEditCell.id !== row.id || selectedEditCell.accessor !== column.accessor"
+                name="vt-edit-input">
+                <span v-if="!column.customCell" style="text-overflow: ellipsis;">{{ row[column.accessor] }}</span>
+                <span>
+                  <slot
+                    :name="column.accessor"
+                    :colData="row[column.accessor]"
+                    :rowData="row">
+                  </slot>
+                </span>
               </span>
-            </span>
-            <span
-              v-if="column.editable"
-              v-show="column.editable && selectedEditCell.id === row.id && selectedEditCell.accessor === column.accessor">
-              <input
-                v-model="row[column.accessor]"
-                v-on:keyup.enter="resetEditCol(row)"
-                v-on:keyup.27="resetEditCol(row, true)"
-                v-on:focusout="focusOut(row)"
-                :ref="`vt-edit-input-${row.id}-${column.accessor}`"
-                :maxlength="column.maxLength">
-            </span>
-          </td>
+              <span
+                v-if="column.editable"
+                v-show="column.editable && selectedEditCell.id === row.id && selectedEditCell.accessor === column.accessor">
+                <input
+                  v-model="row[column.accessor]"
+                  v-on:keyup.enter="resetEditCol(row)"
+                  v-on:keyup.27="resetEditCol(row, true)"
+                  v-on:focusout="focusOut(row)"
+                  :ref="`vt-edit-input-${row.id}-${column.accessor}`"
+                  :maxlength="column.maxLength">
+              </span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div :style="{width: vtContainerStyle.width}" v-if="showPagination">
+      <table style="width: 100%;">
+        <tr>
+          <th style="width: 30%; text-align: center;"
+            :class="page > 1 ? '' : 'disabled'"
+            v-on:click="handlePrevClick">
+            <button>Previous</button>
+          </th>
+          <th style="width: 40%; text-align: center; font-weight: normal; font-size: 12px">
+            <p>
+              Rows per page
+              <select v-model="pageSize">
+                <option v-for="pageS in pageSizes">{{ pageS }}</option>
+              </select>
+            </p>
+            <p>
+              Page {{ page }}
+            </p>
+          </th>
+          <th
+            style="width: 30%; text-align: center;"
+            :class="vtRows.length > page * pageSize ? '' : 'disabled'"
+            v-on:click="handleNextClick">
+            <button>Next</button>
+          </th>
         </tr>
-      </tbody>
-      <tfoot>
-
-      </tfoot>
-    </table>
+      </table>
+    </div>
   </div>
 </template>
 
@@ -87,7 +117,7 @@
   }
 
   export default Vue.component('VueTable', {
-    props: ['columns', 'rows'],
+    props: ['columns', 'rows', 'showFilters', 'showPagination', 'containerStyle'],
     data () {
       return {
         vtRows: [],
@@ -97,10 +127,18 @@
           direction: '',
           accessor: ''
         },
-        tableWidth: 0
+        tableWidth: 0,
+        page: 1,
+        pageSize: 10,
+        pageSizes: [10, 25, 50, 100],
+        startIndex: 0,
+        endIndex: 9
       }
     },
     computed: {
+      idRows: function () {
+        return addIds(this.rows)
+      },
       filteredCols: function () {
         let fitlteredObj = {}
         this.columns.forEach(col => {
@@ -111,6 +149,13 @@
         })
 
         return fitlteredObj
+      },
+      vtContainerStyle: function () {
+        let style = { width: '90vw', height: '425px', overflow: 'auto' }
+        if (this.containerStyle) {
+          style = { ...style, ...this.containerStyle }
+        }
+        return style
       }
     },
     methods: {
@@ -166,7 +211,7 @@
         this.vtRows = this.sortRows(this.vtRows)
       },
       changeFilterValue: function () {
-        let newRows = [ ...addIds(this.rows) ]
+        let newRows = [ ...this.idRows ]
 
         if (this.searchValue) {
           newRows = newRows.filter(row => {
@@ -192,10 +237,13 @@
           if (selectedFilterCol.filterMethod) {
             newRows = newRows.filter(row => selectedFilterCol.filterMethod(row[accessor], selectedFilterCol.value))
           } else {
-            const re = new RegExp(String(selectedFilterCol.value), 'i')
-            newRows = newRows.filter(row => String(row[accessor]).search(re) >= 0)
+            if (selectedFilterCol.value) {
+              const re = new RegExp(String(selectedFilterCol.value), 'i')
+              newRows = newRows.filter(row => String(row[accessor]).search(re) >= 0)
+            }
           }
         })
+
         this.vtRows = this.sortRows(newRows)
       },
       headerLineStyle: function (accessor) {
@@ -246,6 +294,21 @@
         }
 
         return newRows.sort(defaultSort)
+      },
+      handlePrevClick: function () {
+        if (this.page > 1) {
+          this.page = this.page - 1
+        }
+      },
+      handleNextClick: function () {
+        if (this.vtRows.length > this.page * this.pageSize) {
+          this.page = this.page + 1
+        }
+      },
+      paginationChange: function () {
+        this.endIndex = this.page * this.pageSize - 1
+        this.startIndex = this.endIndex + 1 - this.pageSize
+        this.$refs['vt-container'].scrollTop = 0
       }
     },
     watch: {
@@ -258,6 +321,12 @@
       },
       rows: function (val) {
         this.vtRows = addIds(this.rows).sort(defaultSort)
+      },
+      page: function () {
+        this.paginationChange()
+      },
+      pageSize: function () {
+        this.paginationChange()
       }
     },
     created () {
@@ -267,13 +336,6 @@
 </script>
 
 <style scoped>
-.v-table-container {
-  width: 90vw;
-  overflow: auto;
-}
-table {
-
-}
 th {
   cursor: pointer;
 }
@@ -281,10 +343,19 @@ th:focus {
   outline: none;
 }
 td {
-  padding: 10px 1px;
+  padding: 10px 4px;
 }
 input {
   width: 100%;
+}
+button {
+  background: none;
+  color: inherit;
+  border: none;
+  padding: 0;
+  font: inherit;
+  cursor: pointer;
+  outline: inherit;
 }
 .overline {
   text-decoration: overline;
@@ -292,13 +363,7 @@ input {
 .underline {
   text-decoration: underline;
 }
-.header {
-
-}
-.column {
-
-}
-.row {
-
+.disabled {
+  color: grey;
 }
 </style>

@@ -1,7 +1,7 @@
 <template>
   <div class="hello" align="center">
     <h1>Payments Page</h1>
-    <vue-table :columns="columns" :rows="payments">
+    <vue-table :columns="columns" :rows="payments" :showFilters="true" :showPagination="true">
       <template slot="Date" slot-scope="slotProps"><span>{{displayDate(slotProps.colData)}}</span></template>
       <template slot="Amount" slot-scope="slotProps"><span>{{usDollarFormatter(slotProps.colData)}}</span></template>
     </vue-table>
