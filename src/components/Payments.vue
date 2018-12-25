@@ -6,7 +6,8 @@
       :rows="payments"
       :showFilters="true"
       :showPagination="true"
-      tBodyHeight="350px">
+      tBodyHeight="350px"
+      :containerStyle="{ width: mobileSize ? '100%' : '700px' }">
       <template slot="Date" slot-scope="slotProps"><span>{{displayDate(slotProps.colData)}}</span></template>
       <template slot="Amount" slot-scope="slotProps"><span>{{usDollarFormatter(slotProps.colData)}}</span></template>
     </vue-table>
@@ -64,11 +65,11 @@ export default {
       ]
     }
   },
-  computed: Vuex.mapState(['payments']),
+  computed: {
+    ...Vuex.mapState(['payments']),
+    mobileSize: function () { return window.screen.availWidth < 786 }
+  },
   methods: {
-    createColumns () {
-
-    },
     increment () {
       this.$store.dispatch('incrementAsync')
     },

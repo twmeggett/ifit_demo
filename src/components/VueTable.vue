@@ -69,7 +69,7 @@
       </table>
     </div>
     <div :style="{width: vtContainerStyle.width}" v-if="showPagination">
-      <table style="width: 100%; border-top: 1px solid black;">
+      <table style="width: 100%; border-top: 1px solid #e2e2e2;">
         <tr>
           <th
             style="width: 30%; text-align: center;"
@@ -377,6 +377,9 @@
 .header-fixed > thead > tr > th {
     float: left;
 }
+table {
+  border-color: #e2e2e2;
+}
 td {
   padding: 10px 4px;
 }
@@ -399,10 +402,10 @@ button {
   outline: inherit;
 }
 .overline {
-  text-decoration: overline;
+  border-top: 2px solid #e2e2e2;
 }
 .underline {
-  text-decoration: underline;
+  border-bottom: 2px solid #e2e2e2;
 }
 .disabled {
   color: grey;
