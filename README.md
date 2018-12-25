@@ -17,7 +17,12 @@ The demo page is hooked up to a Firebase database, managing the data passed into
 
 #Vue Component Example
 ```
-<vue-table :columns="columns" :rows="payments">
+<vue-table
+  :columns="columns"
+  :rows="payments"
+  :showFilters="true"
+  :showPagination="true"
+  tBodyHeight="350px">
   <template slot="Date" slot-scope="slotProps"><span>{{displayDate(slotProps.colData)}}</span></template>
   <template slot="Amount" slot-scope="slotProps"><span>{{usDollarFormatter(slotProps.colData)}}</span></template>
 </vue-table>
@@ -26,43 +31,43 @@ The demo page is hooked up to a Firebase database, managing the data passed into
 #Props Passed to Component
 ```
 columns: [
-    {
-      header: 'Name',
-      accessor: 'Name',
-      minWidth: 120,
-      sortMethod: function (a, b) { // custom sort by last name
-        if (a['Name'].split(' ')[1] > b['Name'].split(' ')[1]) { return 1 }
-        if (a['Name'].split(' ')[1] < b['Name'].split(' ')[1]) { return -1 }
-        return 0
-      }
-    },
-    {
-      header: 'Amount',
-      accessor: 'Amount',
-      minWidth: 150,
-      customCell: true
-    },
-    {
-      header: 'Description',
-      accessor: 'Description',
-      minWidth: 400,
-      editable: true,
-      onChange: (payment) => {
-        this.updatePaymentDesc(payment)
-      }
-    },
-    {
-      header: 'Date',
-      accessor: 'Date',
-      minWidth: 120,
-      customCell: true,
-      filterMethod: function (rowValue, filterValue) { // custom filter on what the display date looks like MM/DD/YYYY
-        const re = new RegExp(String(filterValue), 'i')
-        const dateFormatted = moment(rowValue).format('MM/DD/YYYY')
-        return String(dateFormatted).search(re) >= 0
-      }
+  {
+    header: 'Name',
+    accessor: 'Name',
+    widthPercent: 20,
+    sortMethod: function (a, b) { // custom sort by last name
+      if (a['Name'].split(' ')[1] > b['Name'].split(' ')[1]) { return 1 }
+      if (a['Name'].split(' ')[1] < b['Name'].split(' ')[1]) { return -1 }
+      return 0
     }
-  ]
+  },
+  {
+    header: 'Amount',
+    accessor: 'Amount',
+    widthPercent: 20,
+    customCell: true
+  },
+  {
+    header: 'Description',
+    accessor: 'Description',
+    widthPercent: 40,
+    editable: true,
+    onChange: (payment) => {
+      this.updatePaymentDesc(payment)
+    }
+  },
+  {
+    header: 'Date',
+    accessor: 'Date',
+    widthPercent: 20,
+    customCell: true,
+    filterMethod: function (rowValue, filterValue) { // custom filter on what the display date looks like MM/DD/YYYY
+      const re = new RegExp(String(filterValue), 'i')
+      const dateFormatted = moment(rowValue).format('MM/DD/YYYY')
+      return String(dateFormatted).search(re) >= 0
+    }
+  }
+]
 
 rows // from Vuex store connected to Firebase
 ```

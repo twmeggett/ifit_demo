@@ -1,7 +1,12 @@
 <template>
-  <div class="hello" align="center">
+  <div class="body" align="center">
     <h1>Payments Page</h1>
-    <vue-table :columns="columns" :rows="payments" :showFilters="true" :showPagination="true">
+    <vue-table
+      :columns="columns"
+      :rows="payments"
+      :showFilters="true"
+      :showPagination="true"
+      tBodyHeight="350px">
       <template slot="Date" slot-scope="slotProps"><span>{{displayDate(slotProps.colData)}}</span></template>
       <template slot="Amount" slot-scope="slotProps"><span>{{usDollarFormatter(slotProps.colData)}}</span></template>
     </vue-table>
@@ -23,7 +28,7 @@ export default {
         {
           header: 'Name',
           accessor: 'Name',
-          minWidth: 120,
+          widthPercent: 20,
           sortMethod: function (a, b) { // custom sort by last name
             if (a['Name'].split(' ')[1] > b['Name'].split(' ')[1]) { return 1 }
             if (a['Name'].split(' ')[1] < b['Name'].split(' ')[1]) { return -1 }
@@ -33,13 +38,13 @@ export default {
         {
           header: 'Amount',
           accessor: 'Amount',
-          minWidth: 150,
+          widthPercent: 20,
           customCell: true
         },
         {
           header: 'Description',
           accessor: 'Description',
-          minWidth: 400,
+          widthPercent: 40,
           editable: true,
           onChange: (payment) => {
             this.updatePaymentDesc(payment)
@@ -48,7 +53,7 @@ export default {
         {
           header: 'Date',
           accessor: 'Date',
-          minWidth: 120,
+          widthPercent: 20,
           customCell: true,
           filterMethod: function (rowValue, filterValue) { // custom filter on what the display date looks like MM/DD/YYYY
             const re = new RegExp(String(filterValue), 'i')
@@ -106,6 +111,9 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+.body {
+  margin: 2px 10px;
+}
 .counter {
   margin: 10px auto;
   border-radius: 3px;

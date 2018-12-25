@@ -1,37 +1,49 @@
 <template inline-template>
   <div>
+    <div :style="{width: vtContainerStyle.width}">
+      <table style="width: 100%;">
+       <tr>
+          <th style="padding-bottom: 15px">
+            <input
+              v-model="searchValue"
+              v-on:input="changeFilterValue"
+              placeholder="Search All"
+              style="border-radius: 5px; height: 35px"/>
+          </th>
+        </tr>
+      </table>
+    </div>
     <div :style="vtContainerStyle" :ref="'vt-container'">
-      <table :width="tableWidth">
+      <table class="header-fixed" :style="{width: tableWidth || '100%'}">
         <thead>
-          <tr>
-            <th style="padding-bottom: 15px" :colspan="columns.length">
-              <input v-model="searchValue" v-on:input="changeFilterValue" placeholder="Search All" />
-            </th>
-          </tr>
           <tr>
             <th
               v-for="column in columns"
-              v-on:click="changeSortedCol(column.accessor)">
+              v-on:click="changeSortedCol(column.accessor)"
+              :style="{width: formatWidthPercent(column.widthPercent)}">
               <button :class="headerLineStyle(column.accessor)">{{ column.header }}</button>
             </th>
           </tr>
           <tr v-if="showFilters">
-            <td
-              v-for="filteredCol in filteredCols">
-              <input v-model="filteredCol.value" v-on:input="changeFilterValue" />
-            </td>
+            <th
+              v-for="column in columns"
+              :style="{width: formatWidthPercent(column.widthPercent)}">
+              <input v-model="filteredCols[column.accessor].value" v-on:input="changeFilterValue" />
+            </th>
           </tr>
         </thead>
-        <tbody>
-          <tr v-for="(row, index) in vtRows" v-if="showPagination ? index >= startIndex && index <= endIndex : true">
+        <tbody :style="{height: tBodyHeight || ''}">
+          <tr
+            v-for="(row, index) in vtRows"
+            v-if="showPagination ? index >= startIndex && index <= endIndex : true">
             <td
               v-for="column in columns"
               v-on:click="() => {if(column.editable){changeEditCol(row.id, column, row[column.accessor])}}"
-              :style="{width: column.minWidth || 100}">
+              :style="{width: formatWidthPercent(column.widthPercent)}">
               <span
                 v-if="!column.editable || selectedEditCell.id !== row.id || selectedEditCell.accessor !== column.accessor"
                 name="vt-edit-input">
-                <span v-if="!column.customCell" style="text-overflow: ellipsis;">{{ row[column.accessor] }}</span>
+                <span v-if="!column.customCell">{{ row[column.accessor] }}</span>
                 <span>
                   <slot
                     :name="column.accessor"
@@ -57,14 +69,14 @@
       </table>
     </div>
     <div :style="{width: vtContainerStyle.width}" v-if="showPagination">
-      <table style="width: 100%;">
+      <table style="width: 100%; border-top: 1px solid black;">
         <tr>
-          <th style="width: 30%; text-align: center;"
-            :class="page > 1 ? '' : 'disabled'"
+          <th
+            style="width: 30%; text-align: center;"
             v-on:click="handlePrevClick">
-            <button>Previous</button>
+            <button :class="page > 1 ? '' : 'disabled'">Previous</button>
           </th>
-          <th style="width: 40%; text-align: center; font-weight: normal; font-size: 12px">
+          <th style="width: 40%; text-align: center; font-weight: normal; font-size: 12px; padding-top: 4px">
             <p>
               Rows per page
               <select v-model="pageSize">
@@ -77,9 +89,8 @@
           </th>
           <th
             style="width: 30%; text-align: center;"
-            :class="vtRows.length > page * pageSize ? '' : 'disabled'"
             v-on:click="handleNextClick">
-            <button>Next</button>
+            <button :class="vtRows.length > page * pageSize ? '' : 'disabled'">Next</button>
           </th>
         </tr>
       </table>
@@ -112,7 +123,7 @@
   }
 
   export default Vue.component('VueTable', {
-    props: ['columns', 'rows', 'showFilters', 'showPagination', 'containerStyle'],
+    props: ['columns', 'rows', 'showFilters', 'showPagination', 'containerStyle', 'tBodyHeight', 'tableWidth'],
     data () {
       return {
         vtRows: [],
@@ -122,7 +133,6 @@
           direction: '',
           accessor: ''
         },
-        tableWidth: 0,
         page: 1,
         pageSize: 10,
         pageSizes: [10, 25, 50, 100],
@@ -304,6 +314,13 @@
         this.endIndex = this.page * this.pageSize - 1
         this.startIndex = this.endIndex + 1 - this.pageSize
         this.$refs['vt-container'].scrollTop = 0
+      },
+      formatWidthPercent: function (percent) {
+        if (percent) {
+          return percent + '%'
+        }
+
+        return `${100 / this.columns.length}%`
       }
     },
     watch: {
@@ -325,17 +342,52 @@
       }
     },
     created () {
-      this.tableWidth = this.columns.map(column => column.minWidth || 100).reduce((total, num) => total + num)
+
     }
   })
 </script>
 
 <style scoped>
+.header-fixed {
+    
+}
+
+.header-fixed > thead,
+.header-fixed > tbody,
+.header-fixed > thead > tr,
+.header-fixed > tbody > tr,
+.header-fixed > thead > tr > th,
+.header-fixed > tbody > tr > td {
+    display: block;
+}
+
+.header-fixed > tbody > tr:after,
+.header-fixed > thead > tr:after {
+    content: ' ';
+    display: block;
+    visibility: hidden;
+    clear: both;
+}
+
+.header-fixed > tbody {
+    overflow-y: auto;
+}
+
+.header-fixed > tbody > tr > td,
+.header-fixed > thead > tr > th {
+    float: left;
+}
 td {
   padding: 10px 4px;
 }
 input {
   width: 100%;
+  border-style: solid;
+  border-width: 1px;
+  border-color: #e2e2e2;
+}
+textarea:focus, input:focus{
+    outline: none;
 }
 button {
   background: none;
@@ -354,6 +406,6 @@ button {
 }
 .disabled {
   color: grey;
-  cursor: none;
+  cursor: default;
 }
 </style>
