@@ -13,7 +13,7 @@
         </tr>
       </table>
     </div>
-    <div :style="vtContainerStyle" :ref="'vt-container'">
+    <div :style="vtContainerStyle">
       <table class="header-fixed" :style="{width: tableWidth || '100%'}">
         <thead>
           <tr>
@@ -32,7 +32,7 @@
             </th>
           </tr>
         </thead>
-        <tbody :style="{height: tBodyHeight || ''}">
+        <tbody :style="{height: tBodyHeight || ''}" :ref="'vt-container'">
           <tr
             v-for="(row, index) in vtRows"
             v-if="showPagination ? index >= startIndex && index <= endIndex : true">
