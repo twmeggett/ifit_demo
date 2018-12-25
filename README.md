@@ -22,7 +22,7 @@ The demo page is hooked up to a Firebase database, managing the data passed into
   :rows="payments"
   :showFilters="true"
   :showPagination="true"
-  tBodyHeight="350px">
+  tBodyHeight="350px"> <!-- setting an optional height allows the filters in the thead to be fixed -->
   <template slot="Date" slot-scope="slotProps"><span>{{displayDate(slotProps.colData)}}</span></template>
   <template slot="Amount" slot-scope="slotProps"><span>{{usDollarFormatter(slotProps.colData)}}</span></template>
 </vue-table>
