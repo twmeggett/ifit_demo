@@ -1,6 +1,7 @@
 # Vue-Data-Grid
 
 > A Vue 2 Vuex Firebase Data Grid Demo
+See live demo here https://twmeggett.github.io/data-grid/
 
 ## Build & Dev Setup
 
