@@ -78,13 +78,13 @@
           </th>
           <th style="width: 40%; text-align: center; font-weight: normal; font-size: 12px; padding-top: 4px">
             <p>
+              Page {{ page }}
+            </p>
+            <p>
               Rows per page
               <select v-model="pageSize">
                 <option v-for="pageS in pageSizes">{{ pageS }}</option>
               </select>
-            </p>
-            <p>
-              Page {{ page }}
             </p>
           </th>
           <th
