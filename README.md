@@ -38,10 +38,10 @@ This is an example of a portable Pinterest layout creator component.
 ```
 {
   colSizes: { // number of columns you want at this screen size 
-    xs: 2, 
-    sm: 4,
-    md: 5,
-    lg: 6
+    xs: 2,
+    sm: 3,
+    md: 4,
+    lg: 5
   },
   cards: cards,
 }
