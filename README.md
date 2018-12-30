@@ -36,14 +36,24 @@ This is an example of a portable Pinterest layout creator component.
 
 #Props Passed to Component
 ```
-{
-  colSizes: { // number of columns you want at this screen size 
-    xs: 2,
-    sm: 3,
-    md: 4,
-    lg: 5
-  },
-  cards: cards,
-}
+data () {
+  return {
+    colSizes: { // number of columns you want at this screen size 
+      xs: 2,
+      sm: 3,
+      md: 4,
+      lg: 5
+    },
+    cards: cards
+  }
+},
+computed: {
+  limit: function () { return this.cards.length > 150 }
+},
+methods: {
+  pushCards: function () {
+    cards.forEach(card => this.cards.push(card))
+  }
+},
 
 ```
