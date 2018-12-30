@@ -1,41 +1,17 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import { firebaseAction, firebaseMutations } from 'vuexfire'
 
 Vue.use(Vuex)
 
 const strict = false
 
-const state = {
-  payments: [],
-  firebaseApp: null
-}
+const state = {}
 
-const getters = {
-  firebaseApp: state => state.firebaseApp
-}
+const getters = {}
 
-const mutations = {
-  set_firebase_app (state, firebaseApp) {
-    state.firebaseApp = firebaseApp
-  },
-  ...firebaseMutations
-}
+const mutations = {}
 
-const actions = {
-  incrementAsync ({ commit }) {
-    setTimeout(() => {
-      commit('increment')
-    }, 200)
-  },
-  update_payment_description (state, payment) {
-    store.paymentsRef.child(`${payment.ID}/Description`).set(payment.Description)
-  },
-  setPaymentsRef: firebaseAction(({ bindFirebaseRef }, ref) => {
-    store.paymentsRef = ref
-    bindFirebaseRef('payments', ref, { wait: true })
-  })
-}
+const actions = {}
 
 const store = new Vuex.Store({
   strict,
