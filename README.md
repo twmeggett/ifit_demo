@@ -1,7 +1,7 @@
 # Vue-Pinterest-Layout-Component
 
 > A Vue 2 Vuex Pinterest Layout Creator Demo -
-Live demo here https://twmeggett.github.io/data-grid/
+Live demo here https://twmeggett.github.io/pint_layout/
 
 ## Build & Dev Setup
 
