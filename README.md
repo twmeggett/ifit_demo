@@ -1,4 +1,4 @@
-# Vue-Data-Grid
+# Vue-Pinterest-Layout-Component
 
 > A Vue 2 Vuex Pinterest Layout Creator Demo -
 Live demo here https://twmeggett.github.io/data-grid/
