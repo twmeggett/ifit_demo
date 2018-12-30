@@ -1,6 +1,6 @@
 # Vue-Pinterest-Layout-Component
 
-> A Vue 2 Vuex Pinterest Layout Creator Demo -
+> A Vue 2 Pinterest Layout Creator Demo -
 Live demo here https://twmeggett.github.io/pint_layout/
 
 ## Build & Dev Setup
