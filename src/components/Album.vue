@@ -81,7 +81,7 @@ export default {
   margin: 2px 10px;
 }
 .card-slot {
-  animation: fadein 1.5s;
+  animation: fadein 2.5s;
 }
 .card-container {
   position: relative;
