@@ -105,7 +105,7 @@ export default {
   width: 100%;
 }
 .overlay:hover {
-  opacity: .5;
+  animation: fadeinAndup .5s forwards;
 }
 .overlay .title {
   text-align: left;
@@ -127,5 +127,9 @@ h1, h2 {
 @keyframes fadein {
   from { opacity: 0; }
   to   { opacity: 1; }
+}
+@keyframes fadeinAndup {
+  from { opacity: 0; padding: 30px 15px 10px 15px }
+  to   { opacity: 0.5; padding: 10px 15px;}
 }
 </style>
