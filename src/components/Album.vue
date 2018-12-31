@@ -10,7 +10,7 @@
         <div class="card-container">
           <img class="card-slot" :src="slotProps.card.src">
           <div class="overlay">
-            <div class="title">{{slotProps.card.title}}</div>
+            <div class="title">{{slotProps.card.title}} {{slotProps.card.index}}</div>
             <div class="date">{{slotProps.card.date}}</div>
           </div>
         </div>
@@ -46,8 +46,6 @@ const cards = [
   { src: createPicSrc(), title: 'Title', date: moment().format('MM/DD/YYYY') },
   { src: createPicSrc(), title: 'Title', date: moment().format('MM/DD/YYYY') },
   { src: createPicSrc(), title: 'Title', date: moment().format('MM/DD/YYYY') },
-  { src: createPicSrc(), title: 'Title', date: moment().format('MM/DD/YYYY') },
-  { src: createPicSrc(), title: 'Title', date: moment().format('MM/DD/YYYY') },
   { src: createPicSrc(), title: 'Title', date: moment().format('MM/DD/YYYY') }
 ]
 export default {
@@ -60,7 +58,7 @@ export default {
         md: 4,
         lg: 5
       },
-      cards: cards
+      cards: cards.map((card, index) => ({ ...card, index: index + 1 }))
     }
   },
   computed: {
@@ -68,7 +66,7 @@ export default {
   },
   methods: {
     pushCards: function () {
-      cards.forEach(card => this.cards.push(card))
+      cards.forEach((card, index) => this.cards.push({ ...card, index: index + this.cards.length + 1 }))
     }
   },
   created () {},
