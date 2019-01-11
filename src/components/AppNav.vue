@@ -139,6 +139,7 @@ export default {
 					font-family: "Proxima Nova", "Roboto", sans-serif;
 					font-weight: bold;
 					border-bottom: 1px #929292 solid;
+					padding-bottom: 3px;
 				}
 			}
 			.search_icon {
