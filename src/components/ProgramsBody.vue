@@ -156,6 +156,10 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
+  a {
+    text-decoration: none !important;
+  }
+
   .description {
     text-align: center;
     margin-top: 27px;
@@ -282,8 +286,12 @@ export default {
       height: 61px;
       background-color: #0097d9;
       cursor: pointer;
-      color: white;
+      letter-spacing: 1px;
+      line-height: 26px;
+      color: #fdfdfd;
       font-family: "Proxima Nova", "Roboto", sans-serif;
+      font-weight: bold;
+      text-align: center;
     }
   }
   .footer {

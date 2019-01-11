@@ -16,9 +16,13 @@ export default {
 }
 </script>
 
-<style>
+<style lang="scss">
 #app {
   height: 100%;
   position: relative;
+
+  a {
+    text-decoration: none !important;
+  }
 }
 </style>

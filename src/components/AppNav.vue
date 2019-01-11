@@ -58,6 +58,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+	a {
+    text-decoration: none !important;
+  }
+  
 	p {
 		margin: 0;
 	}
