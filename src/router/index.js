@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Album from '@/components/Album'
+import ProgramsBody from '@/components/ProgramsBody'
 
 Vue.use(Router)
 
@@ -8,8 +8,8 @@ export default new Router({
   routes: [
     {
       path: '/',
-      name: 'Album',
-      component: Album
+      name: 'ProgramsBody',
+      component: ProgramsBody
     }
   ]
 })
