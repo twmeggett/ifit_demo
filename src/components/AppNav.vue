@@ -21,7 +21,7 @@
 	  		<a href="#" v-on:click="changeNav('features')"><p :class="selectedNav === 'features' ? 'selected' : ''">FEATURES</p></a>
 	  		<a href="#" v-on:click="changeNav('programs')"><p :class="selectedNav === 'programs' ? 'selected' : ''">PROGRAMS</p></a>
 	  		<a href="#" v-on:click="changeNav('training')"><p :class="selectedNav === 'training' ? 'selected' : ''">TRAINING</p></a>
-	  		<a href="#"><p class="search_icon" v-on:click="toggleSearchOpen"><SearchIcon /></p></a>
+	  		<p class="search_icon" v-on:click="toggleSearchOpen"><SearchIcon /></p>
 	  		<div :class="`nav_search_box_container ${searchAnimClass}`">
 		  		<input type="text" name="search">
 		  	</div>
@@ -162,7 +162,8 @@ export default {
 			}
 			.search_icon {
 				margin-left: 30px;
-				
+				cursor: pointer;
+
 				svg {
 					position: relative;
     			top: 4px;
