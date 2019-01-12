@@ -18,7 +18,7 @@
         </div>
       </div>
       <div class="view_more">
-        <button>View More</button>
+        <button>VIEW MORE</button>
       </div>
       <div class="quote">
         <div class="quote_symbol">
@@ -309,6 +309,7 @@ export default {
       color: #fdfdfd;
       font-family: "Proxima Nova", "Roboto", sans-serif;
       font-weight: bold;
+      font-size: 17px;
       text-align: center;
     }
   }
