@@ -21,7 +21,10 @@
 	  		<a href="#" v-on:click="changeNav('features')"><p :class="selectedNav === 'features' ? 'selected' : ''">FEATURES</p></a>
 	  		<a href="#" v-on:click="changeNav('programs')"><p :class="selectedNav === 'programs' ? 'selected' : ''">PROGRAMS</p></a>
 	  		<a href="#" v-on:click="changeNav('training')"><p :class="selectedNav === 'training' ? 'selected' : ''">TRAINING</p></a>
-	  		<a href="#"><p class="search_icon"><SearchIcon /></p></a>
+	  		<a href="#"><p class="search_icon" v-on:click="toggleSearchOpen"><SearchIcon /></p></a>
+	  		<div :class="`nav_search_box_container ${searchAnimClass}`">
+		  		<input type="text" name="search">
+		  	</div>
 	  	</div>
 	  </div>
 	</div>
@@ -34,15 +37,31 @@ export default {
   name: 'AppNav',
   data () {
     return {
-      selectedNav: 'programs'
+      selectedNav: 'programs',
+      searchOpen: null
     }
   },
   methods: {
     changeNav: function (nav) {
       this.selectedNav = nav
+    },
+    toggleSearchOpen: function () {
+      if (this.searchOpen && this.searchOpen === 'open') {
+        this.searchOpen = 'close'
+      } else {
+        this.searchOpen = 'open'
+      }
     }
   },
   computed: {
+    searchAnimClass () {
+      if (this.searchOpen) {
+        if (this.searchOpen === 'open') {
+          return 'roll_in_anim'
+        }
+        return 'roll_out_anim'
+      }
+    },
     iconUrl () {
       return require('../../static/Ifit_Logo.png')
     }
@@ -139,7 +158,6 @@ export default {
 					font-family: "Proxima Nova", "Roboto", sans-serif;
 					font-weight: bold;
 					border-bottom: 1px #929292 solid;
-					padding-bottom: 3px;
 				}
 			}
 			.search_icon {
@@ -151,6 +169,26 @@ export default {
     			font-size: 30px;
 				}
 			}
+			.nav_search_box_container {
+				display: inline-block;
+				width: 0px;
+				opacity: 0;
+			}
+
+			.nav_search_box_container.roll_in_anim {
+				animation: roll_in 1s forwards;
+			}
+			.nav_search_box_container.roll_out_anim {
+				animation: roll_out 1s forwards;
+			} 
 		}
+	}
+	@keyframes roll_in {
+	  from { opacity: 0; width: 0 }
+	  to   { opacity: 1; width: 150px}
+	}
+	@keyframes roll_out {
+	  from { opacity: 1; width: 150px }
+	  to   { opacity: 0; width: 0}
 	}
 </style>
