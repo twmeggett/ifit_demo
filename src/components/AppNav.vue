@@ -174,13 +174,25 @@ export default {
 				display: inline-block;
 				width: 0px;
 				opacity: 0;
+
+				input {
+					width: 0;
+				}
 			}
 
 			.nav_search_box_container.roll_in_anim {
 				animation: roll_in 1s forwards;
+
+				input {
+					animation: roll_in 1s forwards;
+				}
 			}
 			.nav_search_box_container.roll_out_anim {
 				animation: roll_out 1s forwards;
+
+				input {
+					animation: roll_out 1s forwards;
+				}
 			} 
 		}
 	}

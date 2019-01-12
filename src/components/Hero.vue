@@ -53,16 +53,14 @@ export default {
       font-family: "Proxima Nova", "Roboto", sans-serif;
     }
 
-    .hero_title, .hero_description {
-      margin-left: 205px;
-    }
-
     .hero_description {
       margin-top: 13px;
     }
 
     .wording_background {
-      margin-bottom: 175px;
+      //display: inline-block;
+      margin-bottom: 197px;
+      margin-left: 189px;
       animation: fadeinAndup 2s forwards;
     }
   }
