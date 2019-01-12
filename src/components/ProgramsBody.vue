@@ -21,9 +21,15 @@
         <button>View More</button>
       </div>
       <div class="quote">
-        <img class="quote_symbol" :src="quote_symbol_url" />
-        <p class="text">To date I have lost 14 Kilos (30 pounds) and my fitness level is at least the same as when I was actively engaged in sports (if not better), thanks to iFit and the range and variation of fitness programs available.</p>
-        <p class="author">—Graham Lambourne</p>
+        <div class="quote_symbol">
+          <img :src="quote_symbol_url" />
+        </div>
+        <div class="text">
+          <p>{{ quotes[quoteDot - 1].text }}</p>
+        </div>
+        <div class="author">
+          <p>—{{ quotes[quoteDot - 1].author }}</p>
+        </div>
         <div class="selectors">
           <img :src="quoteDot === 1 ? option_dot_selected_url : option_dot_url" v-on:click="changeQuoteDot(1)" />
           <img :src="quoteDot === 2 ? option_dot_selected_url : option_dot_url" v-on:click="changeQuoteDot(2)" />
@@ -101,6 +107,20 @@ export default {
   data () {
     return {
       quoteDot: 1,
+      quotes: [
+        {
+          text: 'To date I have lost 14 Kilos (30 pounds) and my fitness level is at least the same as when I was actively engaged in sports (if not better), thanks to iFit and the range and variation of fitness programs available.',
+          author: 'Graham Lambourne'
+        },
+        {
+          text: 'Placeholder Text 2',
+          author: 'Placeholder Author 2'
+        },
+        {
+          text: 'Placeholder Text 3',
+          author: 'Placeholder Author 3'
+        }
+      ],
       cards: [
         {
           src: require('../../static/Jillian_Image.jpg'),
@@ -261,16 +281,17 @@ export default {
     //padding-left: 231px;
 
     .quote_symbol {
+      display: inline-block;
       margin-left: 231px;
       position: relative;
-      margin-top: -33px;
+      margin-top: 45px;
       margin-right: 40px;
     }
     .text {
-      margin-top: 59px;
       display: inline-block;
+      position: absolute;
+      margin-top: 59px;
       width: 848px;
-      height: 123px;
       font-size: 18px;
       line-height: 24px;
       color: #fdfdfd;
