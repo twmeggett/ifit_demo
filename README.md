@@ -1,3 +1,5 @@
+Live demo here - https://twmeggett.github.io/ifit_demo/#/
+
 ## Build & Dev Setup
 
 ``` bash
