@@ -2,16 +2,19 @@
   <div id="app">
     <AppNav/>
     <router-view/>
+    <Footer />
   </div>
 </template>
 
 <script>
 import AppNav from '@/components/AppNav'
+import Footer from '@/components/Footer'
 
 export default {
   name: 'app',
   components: {
-    AppNav
+    AppNav,
+    Footer
   }
 }
 </script>
